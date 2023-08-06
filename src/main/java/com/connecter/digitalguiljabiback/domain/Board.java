@@ -107,7 +107,6 @@ public class Board {
     public void reject(String rejReason) {
         this.reason = rejReason;
         this.status = BoardStatus.REFUSAL;
-        this.reportCnt ++;
     }
 
     public void initReportCnt() { this.reportCnt = 0; }
