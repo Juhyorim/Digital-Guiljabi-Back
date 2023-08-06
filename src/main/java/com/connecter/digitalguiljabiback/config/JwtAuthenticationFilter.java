@@ -42,17 +42,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
+        log.info("@@@: #1");
+
         jwt = authHeader.substring(7); //Bearer 제외
         userId = jwtService.extractUsername(jwt);
 
         if (userId == null)
             throw new JwtException("유효하지 않은 토큰");
-
+        log.info("@@@: #2");
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userId);
-
+            log.info("@@@: #3");
             if (jwtService.isTokenValid(jwt, userDetails)) {
-
+                log.info("@@@: #4");
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                   userDetails,
                   null, //우리는 credentials가 없는 사용자 사용
@@ -67,7 +69,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             } else {
                 throw new JwtException("유효하지 않은 토큰");
             }
+            log.info("@@@: #5");
         }
+        log.info("@@@: #6");
 
         filterChain.doFilter(request, response);
     }
